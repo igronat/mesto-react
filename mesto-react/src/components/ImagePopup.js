@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function ImagePopup({card, onClose}) {
 
@@ -14,23 +14,6 @@ export default function ImagePopup({card, onClose}) {
         </div>
     </div>
     
-)
-
-    // constructor(selector) {
-    //     super(selector); //  вызываем конструктор родителя
-
-    //     this._name = this._popup.querySelector('.popup__fototext');
-    //     this._link = this._popup.querySelector('.popup__foto');
-
-    // }
-
-    // open({ name, link }) { //функция открытия окна popup
-    //     super.open();
-
-    //     this._link.src = link;
-    //     this._name.textContent = name;
-    //     this._link.alt = `Фото ${name}`;
-
-    // }
+    )
 
 }
