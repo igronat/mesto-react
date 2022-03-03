@@ -30,25 +30,43 @@ function App() {
 
     const handleEditAvatarClick = () => {
         console.log('handleEditAvatarClick')
-        setEditAvatarPopupOpen(true)
-    }
+        setEditAvatarPopupOpen(true);
+        document.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Escape') {
+                setEditAvatarPopupOpen(false);
+                }
+        })
+    };
     const handleEditProfileClick = () => {
         console.log(setEditProfilePopupOpen)
-        setEditProfilePopupOpen(true)
+        setEditProfilePopupOpen(true);
+        document.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Escape') {
+                setEditProfilePopupOpen(false);
+                }
+            })
     }
     const handleAddPlaceClick= () => {
-        console.log('handleAddPlaceClick')
-        setAddPlacePopupOpen(true)
+        setAddPlacePopupOpen(true);
+        document.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Escape') {
+                setAddPlacePopupOpen(false);
+                }
+
+        });
     }
-
-
-
 
     const closeAllPopups = (evt) => {
         setEditProfilePopupOpen(false);
         setAddPlacePopupOpen(false);
-        setEditAvatarPopupOpen(false)
-        
+        setEditAvatarPopupOpen(false);
+        document.removeEventListener('keydown', (evt) => {
+            if (evt.key === 'Escape') {
+                setEditProfilePopupOpen(false);
+                setAddPlacePopupOpen(false);
+                setEditAvatarPopupOpen(false);
+                }
+            })
     }
 
 

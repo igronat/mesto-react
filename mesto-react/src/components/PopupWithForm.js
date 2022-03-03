@@ -17,6 +17,7 @@ export default function PopupWithForm({
 
     // }
 
+
     return (
         <div className={isOpen ? `popup popup_type_${name} popup_opened` : `popup popup_type_${name}`} id={name}>
         <div className="popup__overlay" id={`overlay__${name}`} onClick={onClose}></div>
