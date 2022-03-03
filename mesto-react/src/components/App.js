@@ -130,7 +130,7 @@ function App() {
             
             /> 
 
-    <template className="template">
+    {/* <template className="template">
         <article className="element">
             <img alt="фото" className="element__image"/>
             <button type="button" className="element__trash"></button>
@@ -142,7 +142,7 @@ function App() {
                 </div>
             </div>
         </article>
-    </template>
+    </template> */}
 
     {/* <div className="popup" id="profile">
         <div className="popup__overlay" id="overlay__profile"></div>

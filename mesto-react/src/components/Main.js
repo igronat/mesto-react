@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import avatar from '../images/avatar.jpg'
 import editButton from '../images/edit-button.svg'
 import plus from '../images/plus.svg'
 import api from '../utils/Api';
+import Card from './Card'
 
 function Main({
     onEditAvatar,
     onEditProfile,
-    onAddPlace
+    onAddPlace,
+    
    }) 
    {
 
     const [userName, setUserName] = useState('');
     const [userDescription, setUserDescription] = useState('');
     const [userAvatar, setUserAvatar] = useState('');
+    const [cards, setCards] = useState([]);
 
     useEffect(() => {
         api
@@ -26,7 +28,18 @@ function Main({
         })
         .catch(err => console.log(`Ошибка при обновлении профиля: ${err}`))
 
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        api
+        .getInitialCards()
+        .then((res) => {
+            setCards(res)
+            
+        })
+        .catch(err => console.log(`Ошибка при добавлении карточек: ${err}`))
+
+    }, []);
 
     return (
         <main className="content">
@@ -48,6 +61,7 @@ function Main({
         </section>
 
         <section className="elements">
+            { cards.map((card) => ( <Card card={card} />))}
         </section>
 
     </main>
