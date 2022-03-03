@@ -3,7 +3,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
-import api from '../utils/Api';
+import ImagePopup from './ImagePopup';
 import '../index.css';
 
 // const handleEditAvatarClick = document.querySelector('.profile__image')
@@ -28,6 +28,7 @@ function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(false)
 
     const handleEditAvatarClick = () => {
         console.log('handleEditAvatarClick')
@@ -56,16 +57,27 @@ function App() {
 
         });
     }
+    const handleCardClick = (card) => {
+        setSelectedCard(card);
+        document.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Escape') {
+                setSelectedCard(false);
+                }
+
+        });
+    }
 
     const closeAllPopups = (evt) => {
         setEditProfilePopupOpen(false);
         setAddPlacePopupOpen(false);
         setEditAvatarPopupOpen(false);
+        setSelectedCard(false)
         document.removeEventListener('keydown', (evt) => {
             if (evt.key === 'Escape') {
                 setEditProfilePopupOpen(false);
                 setAddPlacePopupOpen(false);
                 setEditAvatarPopupOpen(false);
+                setSelectedCard(false)
                 }
             })
     }
@@ -79,7 +91,7 @@ function App() {
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
-            
+                onCardClick={handleCardClick}
             />
 
             <Footer/>
@@ -129,6 +141,12 @@ function App() {
                 isOpen={isEditAvatarPopupOpen}
             
             /> 
+
+            <ImagePopup 
+                card = {selectedCard}
+                onClose = {closeAllPopups}
+            
+            />
 
     {/* <template className="template">
         <article className="element">
