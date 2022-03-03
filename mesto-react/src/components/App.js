@@ -3,6 +3,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
+import api from '../utils/Api';
 import '../index.css';
 
 // const handleEditAvatarClick = document.querySelector('.profile__image')
@@ -88,9 +89,9 @@ function App() {
                 name='profile'
                 children={
                     <>
-                    <input id="name" type="text" className="popup__input popup__text popup__text_type_name" name="name" placeholder="Имя" required value="Жак-Ив Кусто" minlength="2" maxlength="40"/>
+                    <input id="name" type="text" className="popup__input popup__text popup__text_type_name" name="name" placeholder="Имя" required defaultValue="Жак-Ив Кусто" minLength="2" maxLength="40"/>
                     <span id="name-error" className="error"></span>
-                    <input id="job" type="text" className="popup__input popup__text popup__text_type_job" name="job" placeholder="Профессия" required value="Исследователь океана" minlength="2" maxlength="200"/>
+                    <input id="job" type="text" className="popup__input popup__text popup__text_type_job" name="job" placeholder="Профессия" required defaultValue="Исследователь океана" minLength="2" maxLength="200"/>
                     <span id="job-error" className="error"></span>
                     </>
                 }
@@ -104,9 +105,9 @@ function App() {
                 name='mesto'
                 children={
                     <>
-                    <input id="nameMesto" type="text" className="popup__input popup__text popup__text_type_mesto" name="mesto" placeholder="Название" required value="" minlength="2" maxlength="30"/>
+                    <input id="nameMesto" type="text" className="popup__input popup__text popup__text_type_mesto" name="mesto" placeholder="Название" required defaultValue="" minLength="2" maxLength="30"/>
                     <span id="nameMesto-error" className="error"></span>
-                    <input id="link" type="url" className="popup__input popup__text popup__text_type_link" name="link" placeholder="Ссылка на картинку" required value=""/>
+                    <input id="link" type="url" className="popup__input popup__text popup__text_type_link" name="link" placeholder="Ссылка на картинку" required defaultValue=""/>
                     <span id="link-error" className="error"></span>
                     </>
                 }
@@ -120,7 +121,7 @@ function App() {
                 name='avatar'
                 children={
                     <>
-                    <input id="avatarUrl" type="url" className="popup__input popup__text popup__text_type_avatar" name="avatar" placeholder="Ссылка на новый аватар" required value=""/>
+                    <input id="avatarUrl" type="url" className="popup__input popup__text popup__text_type_avatar" name="avatar" placeholder="Ссылка на новый аватар" required defaultValue=""/>
                     <span id="avatarUrl-error" className="error"></span>
                     </>
                 }
@@ -202,7 +203,7 @@ function App() {
         <div className="popup__img">
             <button className="popup__close" type="button"></button>
             <form name="sizeImg" className="popup__form">
-                <img alt="фото" className="popup__foto" src="<%=require('./images/dombai.jpg')%>"/>
+                <img alt="фото" className="popup__foto" src=""/>
                 <h2 className="popup__fototext"></h2>
             </form>
         </div>
