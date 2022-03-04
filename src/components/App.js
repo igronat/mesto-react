@@ -1,65 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import '../index.css';
+
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState(false)
+    const [selectedCard, setSelectedCard] = useState(false);
+
+    useEffect(() => {
+        const handleEscClose = (e) => {
+          if (e.key === "Escape") {
+            closeAllPopups();
+          }
+        };
+    
+        document.addEventListener("keydown", handleEscClose);
+    
+        return () => document.removeEventListener("keydown", handleEscClose);
+      }, []); 
 
     const handleEditAvatarClick = () => {
         setEditAvatarPopupOpen(true);
-        document.addEventListener('keydown', (evt) => {
-            if (evt.key === 'Escape') {
-                setEditAvatarPopupOpen(false);
-                }
-        })
     };
     const handleEditProfileClick = () => {
         setEditProfilePopupOpen(true);
-        document.addEventListener('keydown', (evt) => {
-            if (evt.key === 'Escape') {
-                setEditProfilePopupOpen(false);
-                }
-            })
     }
     const handleAddPlaceClick= () => {
         setAddPlacePopupOpen(true);
-        document.addEventListener('keydown', (evt) => {
-            if (evt.key === 'Escape') {
-                setAddPlacePopupOpen(false);
-                }
-
-        });
     }
     const handleCardClick = (card) => {
         setSelectedCard(card);
-        document.addEventListener('keydown', (evt) => {
-            if (evt.key === 'Escape') {
-                setSelectedCard(false);
-                }
-
-        });
     }
 
-    const closeAllPopups = (evt) => {
+    const closeAllPopups = () => {
         setEditProfilePopupOpen(false);
         setAddPlacePopupOpen(false);
         setEditAvatarPopupOpen(false);
-        setSelectedCard(false)
-        document.removeEventListener('keydown', (evt) => {
-            if (evt.key === 'Escape') {
-                setEditProfilePopupOpen(false);
-                setAddPlacePopupOpen(false);
-                setEditAvatarPopupOpen(false);
-                setSelectedCard(false)
-                }
-            })
+        setSelectedCard(false);
     }
 
 
@@ -127,19 +109,7 @@ function App() {
                 onClose = {closeAllPopups}
             
             />
-
-    <div className="popup" id="delete">
-        <div className="popup__overlay" id="overlay__delete"></div>
-        <div className="popup__content">
-            <button className="popup__close" type="button"></button>
-            <form name="DeleteCard" className="popup__form popup__delete">
-                <h2 className="popup__title">Вы уверены?</h2>
-                <button type="button" className="popup__button button" id="button-delete">Да</button>
-            </form>
-        </div>
-    </div>
-
-    
+ 
         </>
     );
 }

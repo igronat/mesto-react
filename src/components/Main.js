@@ -26,11 +26,8 @@ function Main({
             setUserAvatar(res.avatar);
             
         })
-        .catch(err => console.log(`Ошибка при обновлении профиля: ${err}`))
+        .catch(err => console.log(`Ошибка при обновлении профиля: ${err}`));
 
-    }, []);
-
-    useEffect(() => {
         api
         .getInitialCards()
         .then((res) => {

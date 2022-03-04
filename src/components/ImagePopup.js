@@ -8,7 +8,7 @@ export default function ImagePopup({card, onClose}) {
         <div className="popup__img">
             <button className="popup__close" type="button" onClick={onClose}></button>
             <form name="sizeImg" className="popup__form">
-                <img alt="фото" className="popup__foto" src={card.link}/>
+                <img alt={`фото ${card.name}`} className="popup__foto" src={card.link}/>
                 <h2 className="popup__fototext">{card.name}</h2>
             </form>
         </div>
