@@ -1,14 +1,13 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext.js';
 import {EditProfilePopup} from './EditProfilePopup';
 import {EditAvatarPopup} from './EditAvatarPopup';
-
+import {AddPlacePopup} from './AddPlacePopup';
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -16,18 +15,9 @@ function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [currentUser, setCurrentUser] = useState({name: '', about: ''});
+    const [cards, setCards] = useState([]);
 
     useEffect(() => {
-        // const handleEscClose = (e) => {
-        //   if (e.key === "Escape") {
-        //     closeAllPopups();
-        //   }
-        // };
-    
-        // document.addEventListener("keydown", handleEscClose);
-    
-        // return () => document.removeEventListener("keydown", handleEscClose);
-
         api
         .getProfileInfo()
         .then((user) => {
@@ -35,6 +25,27 @@ function App() {
             
         })
         .catch(err => console.log(`Ошибка профиля: ${err}`));
+
+        api
+        .getInitialCards()
+        .then((res) => {
+            setCards(res)
+            
+        })
+        .catch(err => console.log(`Ошибка при добавлении карточек: ${err}`))
+    }, []); 
+
+    useEffect(() => {
+        const handleEscClose = (e) => {
+          if (e.key === "Escape") {
+            closeAllPopups();
+          }
+        };
+    
+        document.addEventListener("keydown", handleEscClose);
+    
+        return () => document.removeEventListener("keydown", handleEscClose);
+
       }, []); 
 
     const handleEditAvatarClick = () => {
@@ -76,8 +87,42 @@ function App() {
             setEditAvatarPopupOpen(false);
         })
         .catch(err => console.log(`Ошибка аватара: ${err}`));
+    };
+
+    const handleAddPlaceSubmit = (user) => {
+        api
+        .addCard(user)
+        .then((res) => {
+            setAddPlacePopupOpen(false);
+            setCards([res, ...cards]);
+        })
+        .catch(err => console.log(`Ошибка аватара: ${err}`));
     }
 
+    function handleCardLike(card) {
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api
+        .changeLikeCardStatus(card._id, isLiked)
+        .then((newCard) => {
+            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        });
+    };
+    
+    function handleCardDelete(card) {
+        // Снова проверяем, являемся ли мы владельцем текущей карточки
+        const isOwn = card.owner._id === currentUser._id;
+        
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api
+        .deleteCard(card._id, !isOwn)
+        .then(() => {
+            setCards((state) => state.filter((c) => c._id != card._id ));
+
+        });
+    } 
 
     return (  
         <>
@@ -89,6 +134,9 @@ function App() {
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
                 onCardClick={handleCardClick}
+                cards={cards}
+                onCardsLike={handleCardLike}
+                onCardDelete={handleCardDelete}
             />
 
             <Footer/>
@@ -99,29 +147,17 @@ function App() {
             onUpdateUser={handleUpdateUser} 
             /> 
 
-            {/* <PopupWithForm
-                title='Новое место'
-                name='mesto'
-                children={
-                    <>
-                    <input id="nameMesto" type="text" className="popup__input popup__text popup__text_type_mesto" name="mesto" placeholder="Название" required defaultValue="" minLength="2" maxLength="30"/>
-                    <span id="nameMesto-error" className="error"></span>
-                    <input id="link" type="url" className="popup__input popup__text popup__text_type_link" name="link" placeholder="Ссылка на картинку" required defaultValue=""/>
-                    <span id="link-error" className="error"></span>
-                    </>
-                }
-                onClose={closeAllPopups}
-                isOpen={isAddPlacePopupOpen}
-            
-            />  */}
+            <AddPlacePopup 
+            isOpen={isAddPlacePopupOpen} 
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit} 
+            />
 
             <EditAvatarPopup 
             isOpen={isEditAvatarPopupOpen} 
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar} 
             />
-
-            
 
             <ImagePopup 
                 card = {selectedCard}

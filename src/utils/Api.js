@@ -65,7 +65,7 @@ class Api {
            method: 'POST',
            headers: this._headers,
            body: JSON.stringify ({
-               name: data.mesto,
+               name: data.name,
                link: data.link,
                id: data.id
            })
@@ -93,16 +93,6 @@ class Api {
        .then(this._handleResponse)
        
     }
-
-    // // отправляем информацию об удалении лайка
-    // deleteLikes(id) {
-    //    return fetch(`${this._address}/cards/${id}/likes`, {
-    //        method: 'DELETE',
-    //        headers: this._headers
-    //    })
-    //    .then(this._handleResponse)
-       
-    // }
 
 };
 

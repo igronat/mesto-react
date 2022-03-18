@@ -17,11 +17,11 @@ export function EditProfilePopup({
             setName(currentUser.name);
             setDescription(currentUser.about);}
             
-          }, [currentUser]); 
+        }, [currentUser]); 
 
         function handleChange(e) {
             setName(e.target.value);
-          };
+        };
         
         function handleChangeDescription(e) {
             setDescription(e.target.value);
@@ -37,9 +37,7 @@ export function EditProfilePopup({
                 about: description,
               });
                
-          } 
-
-        
+          }; 
 
         return ( 
             <PopupWithForm

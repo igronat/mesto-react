@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import editButton from '../images/edit-button.svg'
 import plus from '../images/plus.svg'
-import api from '../utils/Api';
 import Card from './Card';
 import {CurrentUserContext} from '../contexts/CurrentUserContext.js'
 
@@ -9,60 +8,14 @@ function Main({
     onEditAvatar,
     onEditProfile,
     onAddPlace,
-    onCardClick
+    onCardClick,
+    cards,
+    onCardsLike,
+    onCardDelete
    }) 
    {
 
-    // const [userName, setUserName] = useState('');
-    // const [userDescription, setUserDescription] = useState('');
-    // const [userAvatar, setUserAvatar] = useState('');
-    const [cards, setCards] = useState([]);
     const currentUser = useContext(CurrentUserContext);
-
-    useEffect(() => {
-        // api
-        // .getProfileInfo()
-        // .then((res) => {
-        //     setUserName(res.name);
-        //     setUserDescription(res.about);
-        //     setUserAvatar(res.avatar);
-            
-        // })
-        // .catch(err => console.log(`Ошибка при обновлении профиля: ${err}`));
-
-        api
-        .getInitialCards()
-        .then((res) => {
-            setCards(res)
-            
-        })
-        .catch(err => console.log(`Ошибка при добавлении карточек: ${err}`))
-
-    }, []);
-
-    function handleCardLike(card) {
-        // Снова проверяем, есть ли уже лайк на этой карточке
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
-        
-        // Отправляем запрос в API и получаем обновлённые данные карточки
-        api
-        .changeLikeCardStatus(card._id, isLiked)
-        .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-        });
-    };
-    
-    function handleCardDelete(card) {
-        // Снова проверяем, являемся ли мы владельцем текущей карточки
-        const isOwn = card.owner._id === currentUser._id;
-        
-        // Отправляем запрос в API и получаем обновлённые данные карточки
-        api
-        .deleteCard(card._id, !isOwn)
-        .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-        });
-    } 
 
     return (
         <main className="content">
@@ -84,7 +37,7 @@ function Main({
         </section>
 
         <section className="elements">
-            { cards.map((card) => ( <Card card={card} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} key={`card${card._id}`}/>))}
+            { cards.map((card) => ( <Card card={card} onCardClick={onCardClick} onCardLike={onCardsLike} onCardDelete={onCardDelete} key={`card${card._id}`}/>))}
         </section>
 
     </main>
