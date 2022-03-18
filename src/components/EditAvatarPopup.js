@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import PopupWithForm from './PopupWithForm';
-import {CurrentUserContext} from '../contexts/CurrentUserContext'; 
 
-export default function EditAvatarPopup ({
+export function EditAvatarPopup ({
     isOpen, 
     onClose,
     onUpdateAvatar
 }) {
 
-    const avatar= useRef();
+    const refAvatar = useRef();
 
     function handleSubmit(e) {
         e.preventDefault();
 
         onUpdateAvatar({
-        avatar: avatar.current.value,
-  });
+        avatar: refAvatar.current.value,
+        });
+        
+        refAvatar.current.value = '';
 
     }
 
@@ -25,13 +26,13 @@ export default function EditAvatarPopup ({
                 name='avatar'
                 children={
                     <>
-                    <input id="avatarUrl" ref={avatar} type="url" className="popup__input popup__text popup__text_type_avatar" name="avatar" placeholder="Ссылка на новый аватар" required defaultValue=""/>
+                    <input id="avatarUrl" ref={refAvatar} type="url" className="popup__input popup__text popup__text_type_avatar" name="avatar" placeholder="Ссылка на новый аватар" required/>
                     <span id="avatarUrl-error" className="error"></span>
                     </>
                 }
                 onClose={onClose}
                 isOpen={isOpen}
-                onUpdateAvatar={handleSubmit}
+                onSubmit={handleSubmit}
             
             /> 
     )

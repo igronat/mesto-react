@@ -6,8 +6,8 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext.js';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
+import {EditProfilePopup} from './EditProfilePopup';
+import {EditAvatarPopup} from './EditAvatarPopup';
 
 
 function App() {
@@ -58,15 +58,16 @@ function App() {
     }
 
     const handleUpdateUser = (user) => {
-        console.log('hgjh')
+        console.log(user)
         api
         .editProfile(user)
-        .then((res) => {
+        .then(res => {
             setCurrentUser(res);
-            setEditProfilePopupOpen(false)
+            console.log(res)
+            
         
         })
-        .catch(err => console.log(`Ошибка профиля: ${err}`));
+        .catch(err => console.log(`Ошибка обновления профиля: ${err}`));
     };
 
     const handleUpdateAvatar = (user) => {
@@ -74,9 +75,9 @@ function App() {
         .avatarProfile(user)
         .then((res) => {
             setCurrentUser(res);
-            
+            setEditAvatarPopupOpen(false);
         })
-        .catch(err => console.log(`Ошибка профиля: ${err}`));
+        .catch(err => console.log(`Ошибка аватара: ${err}`));
     }
 
 
@@ -114,13 +115,13 @@ function App() {
                 onClose={closeAllPopups}
                 isOpen={isAddPlacePopupOpen}
             
-            /> 
+            />  */}
 
             <EditAvatarPopup 
             isOpen={isEditAvatarPopupOpen} 
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar} 
-            /> */}
+            />
 
             
 

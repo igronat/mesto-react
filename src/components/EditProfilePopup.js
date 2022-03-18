@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PopupWithForm from './PopupWithForm';
-import {CurrentUserContext} from '../contexts/CurrentUserContext.js'; 
+import {CurrentUserContext} from '../contexts/CurrentUserContext'; 
 
-export default function EditProfilePopup({
+export function EditProfilePopup({
     isOpen, 
     onClose,
     onUpdateUser
@@ -16,6 +16,7 @@ export default function EditProfilePopup({
             if (currentUser){
             setName(currentUser.name);
             setDescription(currentUser.about);}
+            console.log(currentUser)
             
           }, [currentUser]); 
 
@@ -28,7 +29,7 @@ export default function EditProfilePopup({
         };
         
         function handleSubmit(e) {
-            console.log(e)
+            console.log(onUpdateUser)
             // Запрещаем браузеру переходить по адресу формы
             e.preventDefault();
              
@@ -36,7 +37,7 @@ export default function EditProfilePopup({
             console.log(description) 
             // Передаём значения управляемых компонентов во внешний обработчик
             onUpdateUser({
-                name: name,
+                name,
                 about: description,
               });
               
