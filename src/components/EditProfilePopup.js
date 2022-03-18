@@ -16,7 +16,6 @@ export function EditProfilePopup({
             if (currentUser){
             setName(currentUser.name);
             setDescription(currentUser.about);}
-            console.log(currentUser)
             
           }, [currentUser]); 
 
@@ -29,19 +28,15 @@ export function EditProfilePopup({
         };
         
         function handleSubmit(e) {
-            console.log(onUpdateUser)
             // Запрещаем браузеру переходить по адресу формы
             e.preventDefault();
              
-            console.log(name) 
-            console.log(description) 
             // Передаём значения управляемых компонентов во внешний обработчик
             onUpdateUser({
                 name,
                 about: description,
               });
-              
-              
+               
           } 
 
         

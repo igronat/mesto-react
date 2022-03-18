@@ -58,13 +58,11 @@ function App() {
     }
 
     const handleUpdateUser = (user) => {
-        console.log(user)
         api
         .editProfile(user)
         .then(res => {
             setCurrentUser(res);
-            console.log(res)
-            
+            setEditProfilePopupOpen(false);
         
         })
         .catch(err => console.log(`Ошибка обновления профиля: ${err}`));

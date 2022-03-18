@@ -17,7 +17,7 @@ function Main({
     // const [userDescription, setUserDescription] = useState('');
     // const [userAvatar, setUserAvatar] = useState('');
     const [cards, setCards] = useState([]);
-    const currentUser = React.useContext(CurrentUserContext);
+    const currentUser = useContext(CurrentUserContext);
 
     useEffect(() => {
         // api
