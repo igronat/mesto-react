@@ -1,27 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import api from '../utils/Api';
+import {CurrentUserContext} from '../contexts/CurrentUserContext.js';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(null);
+    const [currentUser, setCurrentUser] = useState({name: '', about: ''});
 
     useEffect(() => {
-        const handleEscClose = (e) => {
-          if (e.key === "Escape") {
-            closeAllPopups();
-          }
-        };
+        // const handleEscClose = (e) => {
+        //   if (e.key === "Escape") {
+        //     closeAllPopups();
+        //   }
+        // };
     
-        document.addEventListener("keydown", handleEscClose);
+        // document.addEventListener("keydown", handleEscClose);
     
-        return () => document.removeEventListener("keydown", handleEscClose);
+        // return () => document.removeEventListener("keydown", handleEscClose);
+
+        api
+        .getProfileInfo()
+        .then((user) => {
+            setCurrentUser(user);
+            
+        })
+        .catch(err => console.log(`Ошибка профиля: ${err}`));
       }, []); 
 
     const handleEditAvatarClick = () => {
@@ -41,12 +54,35 @@ function App() {
         setEditProfilePopupOpen(false);
         setAddPlacePopupOpen(false);
         setEditAvatarPopupOpen(false);
-        setSelectedCard(false);
+        setSelectedCard(null);
+    }
+
+    const handleUpdateUser = (user) => {
+        console.log('hgjh')
+        api
+        .editProfile(user)
+        .then((res) => {
+            setCurrentUser(res);
+            setEditProfilePopupOpen(false)
+        
+        })
+        .catch(err => console.log(`Ошибка профиля: ${err}`));
+    };
+
+    const handleUpdateAvatar = (user) => {
+        api
+        .avatarProfile(user)
+        .then((res) => {
+            setCurrentUser(res);
+            
+        })
+        .catch(err => console.log(`Ошибка профиля: ${err}`));
     }
 
 
     return (  
         <>
+        <CurrentUserContext.Provider value={currentUser}>
             <Header/>
 
             <Main
@@ -58,23 +94,13 @@ function App() {
 
             <Footer/>
 
-            <PopupWithForm
-                title='Редактировать профиль'
-                name='profile'
-                children={
-                    <>
-                    <input id="name" type="text" className="popup__input popup__text popup__text_type_name" name="name" placeholder="Имя" required defaultValue="Жак-Ив Кусто" minLength="2" maxLength="40"/>
-                    <span id="name-error" className="error"></span>
-                    <input id="job" type="text" className="popup__input popup__text popup__text_type_job" name="job" placeholder="Профессия" required defaultValue="Исследователь океана" minLength="2" maxLength="200"/>
-                    <span id="job-error" className="error"></span>
-                    </>
-                }
-                onClose={closeAllPopups}
-                isOpen={isEditProfilePopupOpen}
-            
-            />
+            <EditProfilePopup 
+            isOpen={isEditProfilePopupOpen} 
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser} 
+            /> 
 
-            <PopupWithForm
+            {/* <PopupWithForm
                 title='Новое место'
                 name='mesto'
                 children={
@@ -90,25 +116,20 @@ function App() {
             
             /> 
 
-            <PopupWithForm
-                title='Обновить аватар'
-                name='avatar'
-                children={
-                    <>
-                    <input id="avatarUrl" type="url" className="popup__input popup__text popup__text_type_avatar" name="avatar" placeholder="Ссылка на новый аватар" required defaultValue=""/>
-                    <span id="avatarUrl-error" className="error"></span>
-                    </>
-                }
-                onClose={closeAllPopups}
-                isOpen={isEditAvatarPopupOpen}
+            <EditAvatarPopup 
+            isOpen={isEditAvatarPopupOpen} 
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar} 
+            /> */}
+
             
-            /> 
 
             <ImagePopup 
                 card = {selectedCard}
                 onClose = {closeAllPopups}
             
             />
+        </CurrentUserContext.Provider>
  
         </>
     );

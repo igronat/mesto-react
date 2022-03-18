@@ -85,24 +85,24 @@ class Api {
     }
 
     // отправляем информацию о лайке
-    putLikes(id) {
+    changeLikeCardStatus(id, isLiked) {
        return fetch(`${this._address}/cards/${id}/likes`, {
-           method: 'PUT',
+           method: `${isLiked ? 'DELETE' : 'PUT'}`,
            headers: this._headers
        })
        .then(this._handleResponse)
        
     }
 
-    // отправляем информацию об удалении лайка
-    deleteLikes(id) {
-       return fetch(`${this._address}/cards/${id}/likes`, {
-           method: 'DELETE',
-           headers: this._headers
-       })
-       .then(this._handleResponse)
+    // // отправляем информацию об удалении лайка
+    // deleteLikes(id) {
+    //    return fetch(`${this._address}/cards/${id}/likes`, {
+    //        method: 'DELETE',
+    //        headers: this._headers
+    //    })
+    //    .then(this._handleResponse)
        
-    }
+    // }
 
 };
 
