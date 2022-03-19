@@ -17,7 +17,7 @@ export function EditProfilePopup({
             setName(currentUser.name);
             setDescription(currentUser.about);}
             
-        }, [currentUser]); 
+        }, [currentUser, isOpen]); 
 
         function handleChange(e) {
             setName(e.target.value);
